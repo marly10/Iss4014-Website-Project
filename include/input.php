@@ -3,7 +3,7 @@
   Class: ISS4014-1 SP20 - Data Base Systems And Web Integration
   Due Date: Due Apr 27
   ----->
-  <!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 
 <head>
@@ -14,49 +14,44 @@
     </style>
 </head>
 
-<body> 
-
+<body>
+    <label for="fname">First Name</label><br>
     <!---------HTML List  Ends here--------->
 
     <!---------Contact Form Begins here--------->
-    <div class="connect">
-        <form action="index.php" method="POST">
 
-            <h3 style="color:rgb(120, 22, 32); text-align:center;">Want to talk, watch or play Football<br>Hit me up
-            </h3>
-            <label for="fname">First Name</label><br>
-            <input type="text"  name="firstname" placeholder="First Name"  value="<?php if (isset($_POST['firstname'])) echo $_POST['firstname']; ?>" required>
+    <form action="input.php" method="POST" enctype="multipart/form-data">
 
-            <br> <label for="lname">Last Name</label><br>
-            <input type="text" name="lastname" placeholder="Last Name" value="<?php if (isset($_POST['lastname'])) echo $_POST['lastname']; ?>" required>
+        <label for="fname">Question</label><br>
+        <textarea type="text" name="model" value="" required></<textarea>
 
-            <br> <label for="email">Email</label><br>
-            <input type="email"  name="emailAdd" placeholder="Email Address" value="<?php if (isset($_POST['emailAdd'])) echo $_POST['emailAdd']; ?>" required>
+<br><label for="fname">Answer1</label><br> 
+<input type="text" name="year" value="" required/>
+
+<br><label for="fname">Answer2</label><br> 
+<input type="number" name="mileage" value="" required/>
+
+<br><label for="fname">Answer3</label><br> 
+<input type="number" name="price" value="" required/>
+
+<br><label for="fname">Answer4</label><br> 
+<input type="text" name="color" value="" required/>
+
+<br><label for="fname">AnswerToQuestion(Enter numeric value)</label><br> 
+<input type="number" name="body" value="" required/>
 
 
-            <br><label for="country">Football Activity</label><br>
-            <select id="footballActivity" name="footballActivity">
-                <option value="Play Football">Play Football </option>
-                <option value="Watch Football">Watch Football</option>
-                <option value="Talk Football">Talk Football</option>
-            </select>
+<br><label for="fname">Count</label><br> 
+<input type="hidden" name="trans" value="0" />
 
-            <br><label for="subject">Other Football Activities</label><br>
-            <textarea id="subject" name="subject" placeholder="Wish to do something else.." style="height:100px"></textarea>
+<br><label for="fname">Marvel Image</label><br> 
+<input type="file" name="image" id="image" />
 
-            <br> <input name="Submit" type="submit"  value="Submit">
-        </form>
-    </div>
+
+<br><input type="submit" name="insert" id="insert" value="Insert" class="btn btn-info" /> </form>
+
 
     <?php
-//ERROR_REPORTING(E_ALL); used to debug where the error was.
-
-//database login information        
-$host    = "iss40142020.csr3g0achpwq.us-east-1.rds.amazonaws.com";
-$user    = "marlyMck1101";
-$pass    = "systemFileInt1101";
-$db_name = "fanPage_ch20"; 
-$connect = mysqli_connect($host, $user, $pass, $db_name);
 
 //if statement that is triggered on the submit button in the form being pressed
  if(isset($_POST["Submit"]))  
@@ -97,3 +92,43 @@ $connect = mysqli_connect($host, $user, $pass, $db_name);
 
 </html>
 
+
+<br />
+
+
+<?php  
+
+//ERROR_REPORTING(E_ALL); used to debug where the error was.
+
+//database login information        
+$host    = "iss40142020.csr3g0achpwq.us-east-1.rds.amazonaws.com";
+$user    = "marlyMck1101";
+$pass    = "systemFileInt1101";
+$db_name = "fanPage_ch20"; 
+$connect = mysqli_connect($host, $user, $pass, $db_name);
+
+
+ if(isset($_POST["insert"]))  
+ {  
+
+     $make = $_POST['make'];
+     $model = $_POST['model'];
+     $year = $_POST['year'];
+     $mileage = $_POST['mileage'];
+     $price = $_POST['price'];
+     $color = $_POST['color'];
+     $body = $_POST['body'];
+     $tran = $_POST['trans'];
+     
+      $file = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));  
+          
+      $query = "INSERT INTO tbl_images(make, model, year, mileage, price, color, body, trans, name) VALUES ('$make', '$model', '$year', '$mileage', '$price', '$color', '$body', '$tran', '$file')";  
+     
+     
+      if(mysqli_query($connect, $query))  
+      {  
+           echo '<script>alert("Image Inserted into Database")</script>';  
+      }  
+ } 
+
+ ?>
